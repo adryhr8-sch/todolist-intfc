@@ -10,13 +10,15 @@ class ToDoList extends StatefulWidget {
 }
 
 class _ToDoListState extends State<ToDoList> {
-  final List<String> _tareas = [
-    'tarea1',
-    'tarea2',
-    'tarea3',
-    'tarea4',
-    'tarea5',
-  ];
+  final List<String> _tareas = [];
+  String _tarea = '';
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +66,14 @@ class _ToDoListState extends State<ToDoList> {
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
                         children: [
-                          const Expanded(
-                            child: Text(
-                              'Ingresa una tarea...',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
+                          Expanded(
+                            child: TextField(
+                              controller: _controller,
+                              onChanged: (value) {
+                                _tarea = value;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Ingresa una tarea...',
                               ),
                             ),
                           ),
@@ -80,7 +84,13 @@ class _ToDoListState extends State<ToDoList> {
                             ),
                             child: IconButton(
                               icon: const Icon(Icons.add, color: Colors.white),
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  if (_tarea.trim() == '') return;
+                                  _tareas.add(_tarea);
+                                  _controller.clear();
+                                });
+                              },
                             ),
                           ),
                         ],
