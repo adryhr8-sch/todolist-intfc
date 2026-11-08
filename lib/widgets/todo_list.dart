@@ -89,6 +89,7 @@ class _ToDoListState extends State<ToDoList> {
                                   if (_tarea.trim() == '') return;
                                   _tareas.add(_tarea);
                                   _controller.clear();
+                                  _tarea = '';
                                 });
                               },
                             ),
